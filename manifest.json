@@ -1,0 +1,63 @@
+{
+    "name": "Huginn",
+    "id": "huginn",
+    "description": {
+        "en": " Build agents that monitor and act on your behalf. Your agents are standing by!"
+    },
+    "licence": "MIT",
+    "maintainer": {
+        "name": "aurel",
+        "email": "aurel@grudu.ovh",
+        "url": "https://github.com/onde2rock/huginn_ynh"
+    },
+    "multi_instance": "false",
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "ask": {
+                    "en": "Choose a domain for huginn"
+                },
+                "example": "example.com"
+            },
+            {
+                "name": "path",
+                "ask": {
+                    "en": "Choose a path for huginn"
+                },
+                "example": "/example",
+                "choices": ["/"],
+                "default": "/"
+            },
+            {
+                "name": "admin",
+                "ask": {
+                    "en": "Choose an admin user"
+                },
+                "example": "johndoe"
+            },
+            {
+                "name": "password",
+                "ask": {
+                    "en": "Choose an admin password"
+                },
+                "example": "supersecretpassword"
+            },
+                        {
+                "name": "invitation",
+                "ask": {
+                    "en": "Choose an invitation code for new users"
+                },
+                "example": "invitationcode"
+            },
+            {
+                "name": "is_public",
+                "ask": {
+                    "en": "Is it a public application ?"
+                },
+                "choices": ["Yes", "No"],
+                "default": "No"
+            }
+        ]
+    }
+}

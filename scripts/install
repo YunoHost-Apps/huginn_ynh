@@ -1,0 +1,162 @@
+#!/bin/bash
+old_pwd=$(pwd)
+
+APP=huginn
+
+# Retrieve arguments
+domain=$1
+path=$2
+admin=$3
+admin_pwd=$4
+invitation=$5
+is_public=$6
+
+
+# Save APP settings
+sudo yunohost app setting $APP admin -v "$admin"
+sudo yunohost app setting $APP is_public -v "$is_public"
+
+# Check domain/path availability
+sudo yunohost app checkurl $domain$path -a $APP
+if [[ ! $? -eq 0 ]]; then
+    exit 1
+fi
+
+#Import node.js repository (can be skipped on Ubuntu and Debian Jessie):
+curl -sL https://deb.nodesource.com/setup_0.12 | sudo bash -
+
+# Install dependencies
+sudo apt-get update -qq
+sudo apt-get install -y runit build-essential git zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl openssh-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate python-docutils pkg-config cmake nodejs graphviz -qq
+
+#Remove the old Ruby versions if present:
+sudo apt-get remove -y ruby1.8 ruby1.9 -qq
+
+#Download Ruby and compile it:
+
+   mkdir /tmp/ruby && cd /tmp/ruby
+   curl -L --silent http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2 | tar xj
+   cd ruby-2.2.3
+   ./configure --disable-install-rdoc > /dev/null
+   make -j -s `nproc`
+   sudo make install
+
+#Install the bundler and foreman gems:
+	sudo gem install bundler foreman --no-ri --no-rdoc
+
+#Create a user for Huginn:
+	sudo adduser --disabled-login --gecos 'Huginn' huginn
+
+#Install the database packages
+	sudo apt-get install -y mysql-server mysql-client libmysqlclient-dev -qq
+
+# Initialize database and store mysql password for upgrade
+db_pwd=$(sudo yunohost app initdb huginn -d huginn_production)
+sudo yunohost app setting huginn  mysqlpwd -v $db_pwd
+
+# Delete db and user if exit with an error
+function exit_properly
+ {
+    set +e
+    root_pwd=$(sudo cat /etc/yunohost/mysql)
+    mysql -u root -p$root_pwd -e "DROP DATABASE huginn_production ; DROP USER $APP@localhost ;"
+    
+    sudo userdel $APP
+    sudo rm -rf /home/huginn
+   
+    exit 1
+}
+trap exit_properly ERR
+
+
+# We'll install Huginn into the home directory of the user "huginn"
+    cd /home/huginn
+
+    # Clone Huginn repository
+    sudo sudo -u huginn -H git clone https://github.com/cantino/huginn.git -b master huginn
+
+    # Go to Huginn installation folder
+    cd /home/huginn/huginn
+
+    # Copy the example Huginn config
+    sudo sudo -u huginn -H cp .env.example .env
+
+    # Create the log/, tmp/pids/ and tmp/sockets/ directories
+    sudo sudo -u huginn mkdir -p log tmp/pids tmp/sockets
+
+    # Make sure Huginn can write to the log/ and tmp/ directories
+    sudo chown -R huginn log/ tmp/
+    sudo chmod -R u+rwX,go-w log/ tmp/
+
+    # Make sure permissions are set correctly
+    sudo chmod -R u+rwX,go-w log/
+    sudo chmod -R u+rwX tmp/
+    sudo sudo -u huginn -H chmod o-rwx .env
+
+    # Copy the example Unicorn config
+    sudo sudo -u huginn -H cp config/unicorn.rb.example config/unicorn.rb
+
+    #Install Gems
+     sudo sudo -u huginn -H bundle install --deployment --without development test
+
+#rake secret
+RAKE_SECRET=$(sudo sudo -u huginn -H rake secret)
+
+#Edit .env
+
+	sudo sudo -u huginn -H sed -i "s/\(DATABASE_PASSWORD *= *\).*/\1\"$db_pwd\"/" .env
+  sudo sudo -u huginn -H sed -i "s/\(DATABASE_USERNAME *= *\).*/\1\"huginn\"/" .env
+  sudo sudo -u huginn -H sed -i "s/\(DATABASE_NAME *= *\).*/\1huginn_production/" .env
+  sudo sudo -u huginn -H sed -i "s/\(APP_SECRET_TOKEN *= *\).*/\1$RAKE_SECRET/" .env
+  sudo sudo -u huginn -H sed -i "s/\(INVITATION_CODE *= *\).*/\1$invitation/" .env
+
+	#uncomment RAILS_ENV
+	sudo sudo -u huginn -H sed -i '/# RAILS_ENV=production/s/^# //' .env
+
+
+# Create the database
+sudo sudo -u huginn -H bundle exec rake db:create RAILS_ENV=production
+
+# Migrate to the latest version
+sudo sudo -u huginn -H bundle exec rake db:migrate RAILS_ENV=production
+
+# Create admin user and example agents
+sudo sudo -u huginn -H bundle exec rake db:seed RAILS_ENV=production SEED_USERNAME=$admin SEED_PASSWORD=$admin_pwd
+
+# Compile Assets
+sudo sudo -u huginn -H bundle exec rake assets:precompile RAILS_ENV=production
+
+#Edit the `Procfile` 
+cd $old_pwd
+sudo cp ../conf/Procfile /home/huginn/huginn/
+cd /home/huginn/huginn/
+
+#Export the init scripts:
+sudo rake production:export
+
+### Setup Logrotate
+sudo cp deployment/logrotate/huginn /etc/logrotate.d/huginn
+
+# Modify Nginx configuration file and copy it to Nginx conf directory
+cd $old_pwd
+sed -i "s@YNH_WWW_PATH@$path@g" ../conf/nginx.conf
+sed -i "s@YNH_WWW_ALIAS@$final_path/@g" ../conf/nginx.conf
+
+sudo cp ../conf/nginx.conf /etc/nginx/conf.d/$domain.d/$APP.conf
+
+
+# If APP is public, add url to SSOWat conf as skipped_uris
+if [ "$is_public" = "Yes" ];
+then
+  # unprotected_uris allows SSO credentials to be passed anyway.
+  sudo yunohost app setting $APP unprotected_uris -v "/"
+fi
+
+#don't know where to desactivate the default in nginx, so i just delete it
+sudo rm /usr/share/nginx/html/index.html
+
+# Restart services
+sudo service nginx reload
+sudo yunohost app ssowatconf
+
+
