@@ -26,8 +26,8 @@
                     "en": "Choose a path for huginn"
                 },
                 "example": "/example",
-                "choices": ["/"],
-                "default": "/"
+                "choices": ["/huginn"],
+                "default": "/huginn"
             },
             {
                 "name": "admin",
