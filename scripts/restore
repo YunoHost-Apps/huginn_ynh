@@ -82,7 +82,6 @@ ynh_script_progression --message="Reinstalling dependencies..."
 # Define and install dependencies
 ynh_install_app_dependencies $pkg_dependencies $build_pkg_dependencies
 ynh_install_ruby --ruby_version=$ruby_version
-ynh_install_app_dependencies $pkg_dependencies
 
 #=================================================
 # RESTORE THE MYSQL DATABASE
@@ -92,6 +91,25 @@ ynh_script_progression --message="Restoring the MySQL database..."
 db_pwd=$(ynh_app_setting_get --app=$app --key=mysqlpwd)
 ynh_mysql_setup_db --db_user=$db_user --db_name=$db_name --db_pwd=$db_pwd
 ynh_mysql_connect_as --user=$db_user --password=$db_pwd --database=$db_name < ./db.sql
+
+#=================================================
+# BUILD APP
+#=================================================
+ynh_script_progression --message="Building app..."
+
+pushd $final_path
+	ynh_use_ruby
+	ynh_gem update --system --no-document
+	ynh_gem install rake bundler foreman --no-document
+	bundle install --deployment --without development test
+	bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
+popd
+
+ynh_install_app_dependencies $pkg_dependencies
+
+chmod 750 "$final_path/public"
+chmod -R o-rwx "$final_path/public"
+chown -R $app:www-data "$final_path/public"
 
 #=================================================
 # RESTORE SYSTEMD

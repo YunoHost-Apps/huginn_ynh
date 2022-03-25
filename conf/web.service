@@ -8,8 +8,9 @@ User=__APP__
 Group=__APP__
 WorkingDirectory=__FINALPATH__/
 EnvironmentFile=__FINALPATH__/.env
-ExecStart=/opt/rbenv/versions/__RUBY_VERSION__/bin/bundle exec unicorn -c config/unicorn.rb
-StandardOutput=append:/var/log/__APP__/__APP__-web.log
+Environment="__YNH_RUBY_LOAD_PATH__"
+ExecStart=/opt/rbenv/versions/__APP__/bin/bundle exec unicorn -c config/unicorn.rb
+StandardOutput=append:__FINALPATH__/log/__APP__-web.log
 StandardError=inherit
 
 [Install]
