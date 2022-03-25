@@ -1,0 +1,16 @@
+[Unit]
+Description=__APP__-web service
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__FINALPATH__/
+EnvironmentFile=__FINALPATH__/.env
+ExecStart=/opt/rbenv/versions/__RUBY_VERSION__/bin/bundle exec unicorn -c config/unicorn.rb
+StandardOutput=append:/var/log/__APP__/__APP__-web.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

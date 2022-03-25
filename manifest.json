@@ -1,62 +1,64 @@
 {
     "name": "Huginn",
     "id": "huginn",
+    "packaging_format": 1,
     "description": {
         "en": " Build agents that monitor and act on your behalf. Your agents are standing by!"
     },
-    "licence": "free",
+    "version": "2022.03.24~ynh1",
+    "url": "https://github.com/huginn/hugin",
+    "upstream": {
+        "license": "MIT",
+        "website": "https://github.com/huginn/hugin",
+        "code": "https://github.com/huginn/huginn"
+    },
+    "license": "MIT",
     "maintainer": {
         "name": "aurel",
         "email": "aurel@grudu.ovh",
         "url": "https://github.com/onde2rock/huginn_ynh"
     },
-    "multi_instance": "false",
+    "requirements": {
+        "yunohost": ">= 4.3.0"
+    },
+    "multi_instance": true,
+    "services": [
+        "nginx",
+        "php7.3-fpm",
+        "mysql"
+    ],
     "arguments": {
-        "install" : [
+        "install": [
             {
                 "name": "domain",
-                "ask": {
-                    "en": "Choose a domain for huginn"
-                },
-                "example": "example.com"
+                "type": "domain"
             },
             {
                 "name": "path",
-                "ask": {
-                    "en": "Choose a path for huginn"
-                },
-                "example": "/example",
-                "choices": ["/"],
-                "default": "/"
+                "type": "path",
+                "example": "/huginn",
+                "default": "/huginn"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "default": true
             },
             {
                 "name": "admin",
-                "ask": {
-                    "en": "Choose an admin user"
-                },
-                "example": "johndoe"
+                "type": "user"
             },
             {
                 "name": "password",
-                "ask": {
-                    "en": "Choose an admin password"
-                },
-                "example": "supersecretpassword"
+                "type": "password"
             },
-                        {
+            {
                 "name": "invitation",
+                "type": "string",
                 "ask": {
                     "en": "Choose an invitation code for new users"
                 },
                 "example": "invitationcode"
-            },
-            {
-                "name": "is_public",
-                "ask": {
-                    "en": "Is it a public application ?"
-                },
-                "choices": ["Yes", "No"],
-                "default": "No"
             }
         ]
     }
