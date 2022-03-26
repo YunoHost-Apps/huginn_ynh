@@ -134,7 +134,7 @@ ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-yunohost service add "$app-web" --log="/var/log/$app/$app-web.log"
+yunohost service add "$app-web" --log="$final_path/log/unicorn.log"
 yunohost service add "$app-jobs" --log="/var/log/$app/$app-jobs.log"
 
 #=================================================
