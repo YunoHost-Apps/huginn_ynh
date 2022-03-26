@@ -34,12 +34,6 @@
                 "type": "domain"
             },
             {
-                "name": "path",
-                "type": "path",
-                "example": "/huginn",
-                "default": "/huginn"
-            },
-            {
                 "name": "is_public",
                 "type": "boolean",
                 "default": true
