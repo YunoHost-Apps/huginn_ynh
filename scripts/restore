@@ -101,7 +101,9 @@ pushd $final_path
 	ynh_use_ruby
 	ynh_gem update --system --no-document
 	ynh_gem install rake bundler foreman --no-document
-	bundle install --deployment --without development test
+	bundle config set --local deployment 'true'
+	bundle config set --local without 'development test'
+	bundle install
 	bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
 popd
 
