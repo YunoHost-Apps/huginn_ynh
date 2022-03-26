@@ -128,16 +128,17 @@ systemctl enable $app-jobs.service --quiet
 #=================================================
 ynh_script_progression --message="Integrating service in YunoHost..."
 
-ynh_add_systemd_config --service="$app-web" --template="web.service"
-ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
+yunohost service add "$app-web" --log="$final_path/log/unicorn.log"
+yunohost service add "$app-jobs" --log="$final_path/log/production.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
 ynh_script_progression --message="Starting a systemd service..."
 
-yunohost service add "$app-web" --log="$final_path/log/unicorn.log"
-yunohost service add "$app-jobs" --log="/var/log/$app/$app-jobs.log"
+# Start a systemd service
+ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$final_path/log/unicorn.log" --line_match="Started"
+ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$final_path/log/production.log" --line_match="Starting"
 
 #=================================================
 # GENERIC FINALIZATION

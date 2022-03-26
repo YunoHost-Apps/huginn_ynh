@@ -133,7 +133,7 @@ ynh_script_progression --message="Starting a systemd service..."
 
 # Start a systemd service
 ynh_systemd_action --service_name="$app-web" --action="start" --log_path="/var/log/$app/$app-web.log" --line_match="Started"
-ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="/var/log/$app/$app-jobs.log" --line_match="Started"
+ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$final_path/log/production.log" --line_match="Started"
 
 #=================================================
 # RELOAD NGINX
