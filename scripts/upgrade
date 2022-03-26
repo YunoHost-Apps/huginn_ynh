@@ -139,8 +139,8 @@ pushd $final_path
 	bundle config set --local deployment 'true'
 	bundle config set --local without 'development test'
 	bundle install
-	bundle exec rake db:migrate RAILS_ENV=production
-	bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
+	ynh_exec_warn_less bundle exec rake db:migrate RAILS_ENV=production
+	ynh_exec_warn_less bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
 popd
 
 ynh_install_app_dependencies $pkg_dependencies

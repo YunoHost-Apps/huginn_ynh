@@ -143,10 +143,10 @@ pushd $final_path
 	bundle config set --local deployment 'true'
 	bundle config set --local without 'development test'
 	bundle install
-	bundle exec rake db:create RAILS_ENV=production
-	bundle exec rake db:migrate RAILS_ENV=production
-	bundle exec rake db:seed RAILS_ENV=production SEED_USERNAME=$admin SEED_PASSWORD=$password
-	bundle exec rake assets:precompile RAILS_ENV=production
+	ynh_exec_warn_less bundle exec rake db:create RAILS_ENV=production
+	ynh_exec_warn_less bundle exec rake db:migrate RAILS_ENV=production
+	ynh_exec_warn_less bundle exec rake db:seed RAILS_ENV=production SEED_USERNAME=$admin SEED_PASSWORD=$password
+	ynh_exec_warn_less bundle exec rake assets:precompile RAILS_ENV=production
 popd
 
 ynh_install_app_dependencies $pkg_dependencies
