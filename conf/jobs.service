@@ -1,0 +1,17 @@
+[Unit]
+Description=__APP__-jobs service
+After=network.target
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__FINALPATH__/
+EnvironmentFile=__FINALPATH__/.env
+Environment="__YNH_RUBY_LOAD_PATH__"
+ExecStart=/opt/rbenv/versions/__APP__/bin/bundle exec rails runner bin/threaded.rb
+StandardOutput=append:__FINALPATH__/log/__APP__-jobs.log
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
