@@ -6,7 +6,7 @@
 
 # dependencies used by the app
 pkg_dependencies=""
-build_pkg_dependencies="default-libmysqlclient-dev libyaml-dev libgdbm-dev libncurses5-dev libffi-dev libcurl4-openssl-dev libicu-dev python-docutils pkg-config cmake nodejs graphviz jq"
+build_pkg_dependencies="default-libmysqlclient-dev libyaml-dev libgdbm-dev libncurses5-dev libffi-dev libcurl4-openssl-dev libicu-dev python3-docutils pkg-config cmake nodejs graphviz jq"
 
 ruby_version=2.6
 
