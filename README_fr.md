@@ -25,7 +25,6 @@ Huginn is a system for building agents that perform automated tasks for you onli
 
 ## Documentations et ressources
 
-* Site officiel de l'app : <https://github.com/huginn/hugin>
 * Dépôt de code officiel de l'app : <https://github.com/huginn/huginn>
 * Documentation YunoHost pour cette app : <https://yunohost.org/app_huginn>
 * Signaler un bug : <https://github.com/YunoHost-Apps/huginn_ynh/issues>
