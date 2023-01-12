@@ -5,7 +5,7 @@
     "description": {
         "en": " Build agents that monitor and act on your behalf. Your agents are standing by!"
     },
-    "version": "2022.03.24~ynh2",
+    "version": "2022.03.24~ynh3",
     "url": "https://github.com/huginn/hugin",
     "upstream": {
         "license": "MIT",
