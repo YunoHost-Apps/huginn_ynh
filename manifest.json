@@ -5,11 +5,10 @@
     "description": {
         "en": " Build agents that monitor and act on your behalf. Your agents are standing by!"
     },
-    "version": "2022.03.24~ynh2",
+    "version": "2022.03.24~ynh3",
     "url": "https://github.com/huginn/hugin",
     "upstream": {
         "license": "MIT",
-        "website": "https://github.com/huginn/hugin",
         "code": "https://github.com/huginn/huginn"
     },
     "license": "MIT",
@@ -19,7 +18,7 @@
         "url": "https://github.com/onde2rock/huginn_ynh"
     },
     "requirements": {
-        "yunohost": ">= 4.3.0"
+        "yunohost": ">= 11.0.9"
     },
     "multi_instance": true,
     "services": [
