@@ -3,7 +3,7 @@
     "id": "huginn",
     "packaging_format": 1,
     "description": {
-        "en": " Build agents that monitor and act on your behalf. Your agents are standing by!"
+        "en": " Build agents that monitor and act on your behalf"
     },
     "version": "2022.03.24~ynh3",
     "url": "https://github.com/huginn/hugin",
