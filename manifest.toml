@@ -5,7 +5,7 @@ name = "Huginn"
 description.en = "Build agents that monitor and act on your behalf"
 description.fr = "Build agents that monitor and act on your behalf"
 
-version = "2022.03.24~ynh3"
+version = "2022.08.18~ynh1"
 
 maintainers = ["aurel"]
 
@@ -43,8 +43,9 @@ ram.runtime = "50M"
 
 [resources]
         [resources.sources.main]
-        url = "https://codeload.github.com/huginn/huginn/tar.gz/c68274384cc7e7d2ab24ef70e5280bcbd5ca57c6"
-        sha256 = "5794a7a1b230ebac01b3d409eb40d90f68c1646e4f042777134499c68315f72e"
+        url = "https://github.com/huginn/huginn/archive/refs/tags/v2022.08.18.tar.gz"
+        sha256 = "845042042089a35c274bef41fc498cfd23733d923ab3772f4311212b42b356d9"
+        autoupdate.strategy = "latest_github_tag"
 
     [resources.ports]
 
