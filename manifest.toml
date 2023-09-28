@@ -11,7 +11,7 @@ maintainers = ["aurel"]
 
 [upstream]
 license = "MIT"
-website = "https://github.com/huginn/hugin"
+code = "https://github.com/huginn/hugin"
 
 [integration]
 yunohost = ">= 11.2"
@@ -20,6 +20,7 @@ multi_instance = true
 ldap = false
 sso = false
 disk = "50M"
+ram.build = "50M"
 ram.runtime = "50M"
 
 [install]
@@ -57,7 +58,7 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "default-libmysqlclient-dev, libyaml-dev, libgdbm-dev, libncurses5-dev, libffi-dev, libcurl4-openssl-dev, libicu-dev, python3-docutils, pkg-config, cmake, graphviz, jq"
+    packages = "mariadb-server, default-libmysqlclient-dev, libyaml-dev, libgdbm-dev, libncurses5-dev, libffi-dev, libcurl4-openssl-dev, libicu-dev, python3-docutils, pkg-config, cmake, graphviz, jq"
 
     [resources.database]
     type = "mysql"
