@@ -11,7 +11,7 @@ maintainers = ["aurel"]
 
 [upstream]
 license = "MIT"
-code = "https://github.com/huginn/hugin"
+code = "https://github.com/huginn/huginn"
 
 [integration]
 yunohost = ">= 11.2"
