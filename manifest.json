@@ -5,7 +5,7 @@
     "description": {
         "en": " Build agents that monitor and act on your behalf"
     },
-    "version": "2022.03.24~ynh3",
+    "version": "2022.03.24~ynh4",
     "url": "https://github.com/huginn/huginn",
     "upstream": {
         "license": "MIT",
