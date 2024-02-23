@@ -11,46 +11,33 @@ source ynh_install_ruby__2
 source /usr/share/yunohost/helpers
 
 #=================================================
-# CHECK VERSION
-#=================================================
-
-upgrade_type=$(ynh_check_app_version_changed)
-
-#=================================================
 # STANDARD UPGRADE STEPS
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping a systemd service..."
+ynh_script_progression --message="Stopping $app's systemd services..."
 
-ynh_systemd_action --service_name=$app-web --action="stop" --log_path="/var/log/$app/$app.log"
-ynh_systemd_action --service_name=$app-jobs --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemd_action --service_name="$app-jobs" --action="stop" --log_path="/var/log/$app/$app.log"
+
+#=================================================
+# UPGRADE DEPENDENCIES
+#=================================================
+ynh_script_progression --message="Upgrading Ruby..." --weight=1
+
+ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
+ynh_script_progression --message="Upgrading source files..."
 
-if [ "$upgrade_type" == "UPGRADE_APP" ]
-then
-	ynh_script_progression --message="Upgrading source files..."
-
-	# Download, check integrity, uncompress and patch the source from app.src
-	ynh_setup_source --dest_dir="$install_dir" --keep=".env"
-	mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
-fi
+# Download, check integrity, uncompress and patch the source from app.src
+ynh_setup_source --dest_dir="$install_dir" --full_replace=1 --keep=".env"
+mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
 
 chmod -R o-rwx "$install_dir"
-chown -R $app:www-data "$install_dir"
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Upgrading NGINX web server configuration..."
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
-
-ynh_install_ruby --ruby_version=$ruby_version
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # SPECIFIC UPGRADE
@@ -62,7 +49,7 @@ ynh_script_progression --message="Updating a configuration file..."
 ynh_add_config --template="../conf/.env.example" --destination="$install_dir/.env"
 
 chmod 400 "$install_dir/.env"
-chown $app:$app "$install_dir/.env"
+chown "$app:$app" "$install_dir/.env"
 
 #=================================================
 # BUILD APP
@@ -72,7 +59,7 @@ ynh_script_progression --message="Building app..."
 pushd $install_dir
 	ynh_use_ruby
 	cp -f config/unicorn.rb.example config/unicorn.rb
-	chown -R $app:www-data "$install_dir/config/unicorn.rb"
+	chown -R "$app:www-data" "$install_dir/config/unicorn.rb"
 	ynh_gem update --system --no-document
 	ynh_gem install rake bundler foreman --no-document
 	bundle config set --local deployment 'true'
@@ -84,31 +71,27 @@ popd
 
 chmod 750 "$install_dir/public"
 chmod -R o-rwx "$install_dir/public"
-chown -R $app:www-data "$install_dir/public"
+chown -R "$app:www-data" "$install_dir/public"
 
 #=================================================
-# SETUP SYSTEMD
+# REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading systemd configuration..."
+ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
 
 # Create a dedicated systemd config
 ynh_add_systemd_config --service="$app-web" --template="web.service"
-ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..."
-
 yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
+
+ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
 yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+ynh_script_progression --message="Starting $app's systemd service..."
 
 # Start a systemd service
 ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --line_match="listening on addr"
