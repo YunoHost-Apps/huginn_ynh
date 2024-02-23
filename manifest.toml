@@ -43,10 +43,10 @@ ram.runtime = "50M"
     example = "invitationcode"
 
 [resources]
-        [resources.sources.main]
-        url = "https://github.com/huginn/huginn/archive/refs/tags/v2022.08.18.tar.gz"
-        sha256 = "845042042089a35c274bef41fc498cfd23733d923ab3772f4311212b42b356d9"
-        autoupdate.strategy = "latest_github_tag"
+    [resources.sources.main]
+    url = "https://github.com/huginn/huginn/archive/refs/tags/v2022.08.18.tar.gz"
+    sha256 = "845042042089a35c274bef41fc498cfd23733d923ab3772f4311212b42b356d9"
+    autoupdate.strategy = "latest_github_release"
 
     [resources.ports]
 
@@ -58,7 +58,22 @@ ram.runtime = "50M"
     main.url = "/"
 
     [resources.apt]
-    packages = "mariadb-server, default-libmysqlclient-dev, libyaml-dev, libgdbm-dev, libncurses5-dev, libffi-dev, libcurl4-openssl-dev, libicu-dev, python3-docutils, pkg-config, cmake, graphviz, jq"
+    packages = [
+        "mariadb-server",
+        "default-libmysqlclient-dev",
+        "libyaml-dev",
+        "libgdbm-dev",
+        "libncurses5-dev",
+        "libjemalloc-dev",
+        "libffi-dev",
+        "libcurl4-openssl-dev",
+        "libicu-dev",
+        "python3-docutils",
+        "pkg-config",
+        "cmake",
+        "graphviz",
+        "jq",
+    ]
 
     [resources.database]
     type = "mysql"

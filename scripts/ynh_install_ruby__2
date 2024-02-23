@@ -80,7 +80,7 @@ ynh_use_ruby () {
     ynh_ruby_load_path="PATH=$PATH"
 
     # Sets the local application-specific Ruby version
-    pushd $final_path
+    pushd $install_dir
         $rbenv_install_dir/bin/rbenv local $ruby_version
     popd
 }
@@ -286,7 +286,7 @@ ynh_cleanup_ruby () {
             required_ruby_versions="${installed_app_ruby_version}\n${required_ruby_versions}"
         fi
     done
-    
+
     # Remove no more needed Ruby versions
     local installed_ruby_versions=$(rbenv versions --bare --skip-aliases | grep -Ev '/')
     for installed_ruby_version in $installed_ruby_versions
