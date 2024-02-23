@@ -75,6 +75,7 @@ ram.runtime = "50M"
         "cmake",
         "graphviz",
         "jq",
+        "openssl",
     ]
 
     [resources.database]
