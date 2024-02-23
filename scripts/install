@@ -59,7 +59,7 @@ pushd "$install_dir"
 	ynh_use_ruby
 	cp config/unicorn.rb.example config/unicorn.rb
 	chown -R $app:www-data "$install_dir/config/unicorn.rb"
-	ynh_gem update --system --no-document
+	# ynh_gem update --system --no-document
 	ynh_gem install rake bundler foreman --no-document
 	bundle config set --local deployment 'true'
 	bundle config set --local without 'development test'
