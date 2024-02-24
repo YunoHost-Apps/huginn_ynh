@@ -1,0 +1,94 @@
+#:schema https://raw.githubusercontent.com/YunoHost/apps/master/schemas/manifest.v2.schema.json
+
+packaging_format = 2
+
+id = "huginn"
+name = "Huginn"
+description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
+
+version = "2022.08.18~ynh1"
+
+maintainers = ["aurel"]
+
+[upstream]
+license = "MIT"
+code = "https://github.com/huginn/huginn"
+
+[integration]
+yunohost = ">= 11.2"
+architectures = "all"
+multi_instance = true
+ldap = false
+sso = false
+disk = "50M"
+ram.build = "50M"
+ram.runtime = "50M"
+
+[install]
+    [install.domain]
+    type = "domain"
+
+    [install.init_main_permission]
+    type = "group"
+    default = "visitors"
+
+    [install.admin]
+    type = "user"
+
+    [install.password]
+    type = "password"
+
+    [install.invitation]
+    ask.en = "Choose an invitation code for new users"
+    type = "string"
+    example = "invitationcode"
+
+[resources]
+    [resources.sources.main]
+    url = "https://github.com/huginn/huginn/archive/refs/tags/v2022.08.18.tar.gz"
+    sha256 = "845042042089a35c274bef41fc498cfd23733d923ab3772f4311212b42b356d9"
+    autoupdate.strategy = "latest_github_release"
+
+    [resources.ports]
+
+    [resources.system_user]
+
+    [resources.install_dir]
+
+    [resources.permissions]
+    main.url = "/"
+
+    [resources.apt]
+    packages = [
+        "mariadb-server",
+        "default-libmysqlclient-dev",
+        "libyaml-dev",
+        "libgdbm-dev",
+        "libncurses5-dev",
+        "libffi-dev",
+        "libcurl4-openssl-dev",
+        "libicu-dev",
+        "python3-docutils",
+        "pkg-config",
+        "cmake",
+        "graphviz",
+        "jq",
+        "openssl",
+
+        "autoconf",
+        "automake",
+        "bison",
+        "build-essential",
+        "curl",
+        "libjemalloc-dev",
+        "libreadline-dev",
+        "libsqlite3-dev",
+        "libssl-dev",
+        "libtool",
+        "libxml2-dev",
+        "libxslt-dev",
+        "zlib1g-dev",
+    ]
+
+    [resources.database]
+    type = "mysql"

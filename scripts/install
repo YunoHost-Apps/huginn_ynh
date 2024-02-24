@@ -11,135 +11,58 @@ source ynh_install_ruby__2
 source /usr/share/yunohost/helpers
 
 #=================================================
-# MANAGE SCRIPT FAILURE
+# INITIALIZE AND STORE SETTINGS
 #=================================================
-
-ynh_clean_setup () {
-	ynh_clean_check_starting
-}
-# Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
-
-#=================================================
-# RETRIEVE ARGUMENTS FROM THE MANIFEST
-#=================================================
-
-domain=$YNH_APP_ARG_DOMAIN
-path_url="/"
-is_public=$YNH_APP_ARG_IS_PUBLIC
-admin=$YNH_APP_ARG_ADMIN
-password=$YNH_APP_ARG_PASSWORD
-invitation=$YNH_APP_ARG_INVITATION
-
-app=$YNH_APP_INSTANCE_NAME
 
 secret=$(ynh_string_random --length=16)
 
-#=================================================
-# CHECK IF THE APP CAN BE INSTALLED WITH THESE ARGS
-#=================================================
-ynh_script_progression --message="Validating installation parameters..."
-
-final_path=/var/www/$app
-test ! -e "$final_path" || ynh_die --message="This path already contains a folder"
-
-# Register (book) web path
-ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
-
-#=================================================
-# STORE SETTINGS FROM MANIFEST
-#=================================================
-ynh_script_progression --message="Storing installation settings..."
-
-ynh_app_setting_set --app=$app --key=domain --value=$domain
-ynh_app_setting_set --app=$app --key=path --value=$path_url
-ynh_app_setting_set --app=$app --key=admin --value=$admin
-ynh_app_setting_set --app=$app --key=invitation --value=$invitation
-ynh_app_setting_set --app=$app --key=secret --value=$secret
-
-#=================================================
-# STANDARD MODIFICATIONS
-#=================================================
-# FIND AND OPEN A PORT
-#=================================================
-ynh_script_progression --message="Finding an available port..."
-
-# Find an available port
-port=$(ynh_find_port --port=8095)
-ynh_app_setting_set --app=$app --key=port --value=$port
+ynh_app_setting_set --app="$app" --key="secret" --value="$secret"
 
 #=================================================
 # INSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Installing dependencies..."
+ynh_script_progression --message="Installing Ruby..."
 
-ynh_install_app_dependencies $pkg_dependencies $build_pkg_dependencies
 ynh_install_ruby --ruby_version=$ruby_version
-
-#=================================================
-# CREATE DEDICATED USER
-#=================================================
-ynh_script_progression --message="Configuring system user..."
-
-# Create a system user
-ynh_system_user_create --username=$app --home_dir="$final_path"
-
-#=================================================
-# CREATE A MYSQL DATABASE
-#=================================================
-ynh_script_progression --message="Creating a MySQL database..."
-
-db_name=$(ynh_sanitize_dbid --db_name=$app)
-db_user=$db_name
-ynh_app_setting_set --app=$app --key=db_name --value=$db_name
-ynh_mysql_setup_db --db_user=$db_user --db_name=$db_name
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
 ynh_script_progression --message="Setting up source files..."
 
-ynh_app_setting_set --app=$app --key=final_path --value=$final_path
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$final_path"
+ynh_setup_source --dest_dir="$install_dir"
 
-mkdir -p "$final_path/log" "$final_path/tmp/pids" "$final_path/tmp/sockets"
+mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
 
-chmod 750 "$final_path"
-chmod -R o-rwx "$final_path"
-chown -R $app:www-data "$final_path"
-
-#=================================================
-# NGINX CONFIGURATION
-#=================================================
-ynh_script_progression --message="Configuring NGINX web server..."
-
-# Create a dedicated NGINX config
-ynh_add_nginx_config
+chmod -R o-rwx "$install_dir"
+chown -R "$app:www-data" "$install_dir"
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
 # ADD A CONFIGURATION
 #=================================================
-ynh_script_progression --message="Adding a configuration file..."
+ynh_script_progression --message="Adding $app's configuration file..."
 
-ynh_add_config --template="../conf/.env.example" --destination="$final_path/.env"
+ynh_add_config --template=".env.example" --destination="$install_dir/.env"
 
-chmod 400 "$final_path/.env"
-chown $app:$app "$final_path/.env"
+chmod 400 "$install_dir/.env"
+chown "$app:$app" "$install_dir/.env"
 
 #=================================================
 # BUILD APP
 #=================================================
 ynh_script_progression --message="Building app..."
 
-pushd $final_path
+pushd "$install_dir"
 	ynh_use_ruby
 	cp config/unicorn.rb.example config/unicorn.rb
-	chown -R $app:www-data "$final_path/config/unicorn.rb"
+	chown -R $app:www-data "$install_dir/config/unicorn.rb"
+	ynh_gem install rubygems-update -v 3.4
 	ynh_gem update --system --no-document
-	ynh_gem install rake bundler foreman --no-document
+	ynh_gem install bundler -v 2.4.22
+	ynh_gem install rake foreman --no-document
 	bundle config set --local deployment 'true'
 	bundle config set --local without 'development test'
 	bundle install
@@ -149,59 +72,32 @@ pushd $final_path
 	ynh_exec_warn_less bundle exec rake assets:precompile RAILS_ENV=production
 popd
 
-ynh_install_app_dependencies $pkg_dependencies
-
-chmod 750 "$final_path/public"
-chmod -R o-rwx "$final_path/public"
-chown -R $app:www-data "$final_path/public"
+chmod 750 "$install_dir/public"
+chmod -R o-rwx "$install_dir/public"
+chown -R $app:www-data "$install_dir/public"
 
 #=================================================
-# SETUP SYSTEMD
+# SYSTEM CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..."
+ynh_script_progression --message="Adding system configurations related to $app..." --weight=1
+
+# Create a dedicated NGINX config
+ynh_add_nginx_config
 
 # Create a dedicated systemd config
 ynh_add_systemd_config --service="$app-web" --template="web.service"
 ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
-
-#=================================================
-# GENERIC FINALIZATION
-#=================================================
-# INTEGRATE SERVICE IN YUNOHOST
-#=================================================
-ynh_script_progression --message="Integrating service in YunoHost..."
-
-yunohost service add "$app-web" --log="$final_path/log/unicorn.log"
-yunohost service add "$app-jobs" --log="$final_path/log/production.log"
+yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
+yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting a systemd service..."
+ynh_script_progression --message="Starting $app's systemd services..."
 
 # Start a systemd service
-ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$final_path/log/unicorn.log" --line_match="listening on addr"
-ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$final_path/log/huginn-jobs.log" --line_match="Starting"
-
-#=================================================
-# SETUP SSOWAT
-#=================================================
-ynh_script_progression --message="Configuring permissions..."
-
-# Make app public if necessary
-if [ $is_public -eq 1 ]
-then
-	# Everyone can access the app.
-	# The "main" permission is automatically created before the install script.
-	ynh_permission_update --permission="main" --add="visitors"
-fi
-
-#=================================================
-# RELOAD NGINX
-#=================================================
-ynh_script_progression --message="Reloading NGINX web server..."
-
-ynh_systemd_action --service_name=nginx --action=reload
+ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --line_match="listening on addr"
+ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --line_match="Starting"
 
 #=================================================
 # END OF SCRIPT
