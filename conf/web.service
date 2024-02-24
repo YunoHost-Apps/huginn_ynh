@@ -6,11 +6,11 @@ After=network.target
 Type=simple
 User=__APP__
 Group=__APP__
-WorkingDirectory=__FINALPATH__/
-EnvironmentFile=__FINALPATH__/.env
+WorkingDirectory=__INSTALL_DIR__/
+EnvironmentFile=__INSTALL_DIR__/.env
 Environment="__YNH_RUBY_LOAD_PATH__"
 ExecStart=/opt/rbenv/versions/__APP__/bin/bundle exec unicorn -c config/unicorn.rb
-StandardOutput=append:__FINALPATH__/log/__APP__-web.log
+StandardOutput=append:__INSTALL_DIR__/log/__APP__-web.log
 StandardError=inherit
 
 [Install]
