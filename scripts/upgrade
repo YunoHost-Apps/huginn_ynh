@@ -60,6 +60,7 @@ pushd $install_dir
 	ynh_use_ruby
 	cp -f config/unicorn.rb.example config/unicorn.rb
 	chown -R "$app:www-data" "$install_dir/config/unicorn.rb"
+	ynh_gem install rubygems-update -v 3.4
 	ynh_gem update --system --no-document
 	ynh_gem install bundler -v 2.4.22
 	ynh_gem install rake foreman --no-document
