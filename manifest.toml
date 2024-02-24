@@ -4,8 +4,7 @@ packaging_format = 2
 
 id = "huginn"
 name = "Huginn"
-description.en = "Build agents that monitor and act on your behalf"
-description.fr = "Build agents that monitor and act on your behalf"
+description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
 
 version = "2022.08.18~ynh1"
 
