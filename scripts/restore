@@ -43,7 +43,8 @@ ynh_script_progression --message="Building app..."
 pushd "$install_dir"
 	ynh_use_ruby
 	ynh_gem update --system --no-document
-	ynh_gem install rake bundler foreman --no-document
+	ynh_gem install bundler -v 2.4.22
+	ynh_gem install rake foreman --no-document
 	bundle config set --local deployment 'true'
 	ynh_exec_warn_less bundle config set --local without 'development test'
 	ynh_exec_warn_less bundle install
