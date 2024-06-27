@@ -5,7 +5,7 @@ Il NE doit PAS être modifié à la main.
 
 # Huginn pour YunoHost
 
-[![Niveau d’intégration](https://dash.yunohost.org/integration/huginn.svg)](https://dash.yunohost.org/appci/app/huginn) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
+[![Niveau d’intégration](https://dash.yunohost.org/integration/huginn.svg)](https://ci-apps.yunohost.org/ci/apps/huginn/) ![Statut du fonctionnement](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Statut de maintenance](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
 
 [![Installer Huginn avec YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=huginn)
 

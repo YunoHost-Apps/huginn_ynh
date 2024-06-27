@@ -5,7 +5,7 @@ EZ editatu eskuz.
 
 # Huginn YunoHost-erako
 
-[![Integrazio maila](https://dash.yunohost.org/integration/huginn.svg)](https://dash.yunohost.org/appci/app/huginn) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
+[![Integrazio maila](https://dash.yunohost.org/integration/huginn.svg)](https://ci-apps.yunohost.org/ci/apps/huginn/) ![Funtzionamendu egoera](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Mantentze egoera](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
 
 [![Instalatu Huginn YunoHost-ekin](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=huginn)
 

@@ -5,7 +5,7 @@
 
 # YunoHost 上的 Huginn
 
-[![集成程度](https://dash.yunohost.org/integration/huginn.svg)](https://dash.yunohost.org/appci/app/huginn) ![工作状态](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
+[![集成程度](https://dash.yunohost.org/integration/huginn.svg)](https://ci-apps.yunohost.org/ci/apps/huginn/) ![工作状态](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![维护状态](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
 
 [![使用 YunoHost 安装 Huginn](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=huginn)
 
