@@ -47,7 +47,9 @@ ram.runtime = "50M"
     [resources.sources.main]
     url = "https://github.com/huginn/huginn/archive/refs/tags/v2022.08.18.tar.gz"
     sha256 = "845042042089a35c274bef41fc498cfd23733d923ab3772f4311212b42b356d9"
-    autoupdate.strategy = "latest_github_release"
+
+    # Yeah there is a release but it's 2 years old and the doc tells to git commit…
+    autoupdate.strategy = "latest_github_commit"
 
     [resources.ports]
 
