@@ -1,8 +1,6 @@
 #!/bin/bash
 
 #=================================================
-# GENERIC START
-#=================================================
 # IMPORT GENERIC HELPERS
 #=================================================
 
@@ -38,8 +36,6 @@ chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
 
 #=================================================
-# SPECIFIC SETUP
-#=================================================
 # ADD A CONFIGURATION
 #=================================================
 ynh_script_progression --message="Adding $app's configuration file..."
@@ -57,7 +53,7 @@ ynh_script_progression --message="Building app..."
 pushd "$install_dir"
 	ynh_use_ruby
 	cp config/unicorn.rb.example config/unicorn.rb
-	chown -R $app:www-data "$install_dir/config/unicorn.rb"
+	chown -R "$app:www-data" "$install_dir/config/unicorn.rb"
 	ynh_gem install rubygems-update -v 3.4
 	ynh_gem update --system --no-document
 	ynh_gem install bundler -v 2.4.22
@@ -73,7 +69,7 @@ popd
 
 chmod 750 "$install_dir/public"
 chmod -R o-rwx "$install_dir/public"
-chown -R $app:www-data "$install_dir/public"
+chown -R "$app:www-data" "$install_dir/public"
 
 #=================================================
 # SYSTEM CONFIGURATION
@@ -85,8 +81,9 @@ ynh_add_nginx_config
 
 # Create a dedicated systemd config
 ynh_add_systemd_config --service="$app-web" --template="web.service"
-ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
 yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
+
+ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
 yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 
 #=================================================
