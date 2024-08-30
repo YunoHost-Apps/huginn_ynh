@@ -10,58 +10,58 @@ source /usr/share/yunohost/helpers
 #=================================================
 # STOP SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Stopping $app's systemd services..."
+ynh_script_progression "Stopping $app's systemd services..."
 
-ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
-ynh_systemd_action --service_name="$app-jobs" --action="stop" --log_path="/var/log/$app/$app.log"
+ynh_systemctl --service="$app-web" --action="stop"
+
+ynh_systemctl --service="$app-jobs" --action="stop"
 
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading Ruby..." --weight=1
+ynh_script_progression "Upgrading Ruby..."
 
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+ynh_ruby_install
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
 #=================================================
-ynh_script_progression --message="Upgrading source files..."
+ynh_script_progression "Upgrading source files..."
 
 # Download, check integrity, uncompress and patch the source from app.src
-ynh_setup_source --dest_dir="$install_dir" --full_replace=1 --keep=".env"
+ynh_setup_source --dest_dir="$install_dir" --full_replace --keep=".env"
 mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
 
-chmod -R o-rwx "$install_dir"
-chown -R "$app:www-data" "$install_dir"
-
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
+#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R "$app:www-data" "$install_dir"
 #=================================================
 # UPDATE A CONFIG FILE
 #=================================================
-ynh_script_progression --message="Updating a configuration file..."
+ynh_script_progression "Updating configuration..."
 
-ynh_add_config --template="../conf/.env.example" --destination="$install_dir/.env"
+ynh_config_add --template=".env.example" --destination="$install_dir/.env"
 
-chmod 400 "$install_dir/.env"
-chown "$app:$app" "$install_dir/.env"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod 400 "$install_dir/.env"
+#REMOVEME? Assuming the file is setup using ynh_config_add, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown "$app:$app" "$install_dir/.env"
 
 #=================================================
 # BUILD APP
 #=================================================
-ynh_script_progression --message="Building app..."
+ynh_script_progression "Building app..."
 
 pushd $install_dir
-	ynh_use_ruby
+
 	cp -f config/unicorn.rb.example config/unicorn.rb
 	chown -R "$app:www-data" "$install_dir/config/unicorn.rb"
-	ynh_gem install rubygems-update -v 3.4
-	ynh_gem update --system --no-document
-	ynh_gem install bundler -v 2.4.22
-	ynh_gem install rake foreman --no-document
+	gem install rubygems-update -v 3.4
+	gem update --system --no-document
+	gem install bundler -v 2.4.22
+	gem install rake foreman --no-document
 	bundle config set --local deployment 'true'
 	bundle config set --local without 'development test'
 	bundle install
-	ynh_exec_warn_less bundle exec rake db:migrate RAILS_ENV=production
-	ynh_exec_warn_less bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
+	ynh_hide_warnings bundle exec rake db:migrate RAILS_ENV=production
+	ynh_hide_warnings bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
 popd
 
 chmod 750 "$install_dir/public"
@@ -71,29 +71,29 @@ chown -R "$app:www-data" "$install_dir/public"
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Upgrading system configurations related to $app..." --weight=1
+ynh_script_progression "Upgrading system configurations related to $app..."
 
 # Create a dedicated NGINX config
-ynh_add_nginx_config
+ynh_config_add_nginx
 
 # Create a dedicated systemd config
-ynh_add_systemd_config --service="$app-web" --template="web.service"
+ynh_config_add_systemd --service="$app-web" --template="web.service"
 yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
 
-ynh_add_systemd_config --service="$app-jobs" --template="jobs.service"
+ynh_config_add_systemd --service="$app-jobs" --template="jobs.service"
 yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Starting $app's systemd service..."
+ynh_script_progression "Starting $app's systemd service..."
 
 # Start a systemd service
-ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --line_match="listening on addr"
-ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --line_match="Starting"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --wait_until="listening on addr"
+ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --wait_until="Starting"
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Upgrade of $app completed"
+ynh_script_progression "Upgrade of $app completed"
