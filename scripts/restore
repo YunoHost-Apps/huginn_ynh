@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
-# Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
 source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
@@ -24,8 +19,6 @@ ynh_restore "$install_dir"
 
 mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
 
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chmod -R o-rwx "$install_dir"
-#REMOVEME? Assuming the install dir is setup using ynh_setup_source, the proper chmod/chowns are now already applied and it shouldn't be necessary to tweak perms | chown -R "$app:www-data" "$install_dir"
 #=================================================
 # RESTORE THE MYSQL DATABASE
 #=================================================
@@ -74,7 +67,6 @@ yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 #=================================================
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
-# Start a systemd service
 ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --wait_until="listening on addr"
 ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --wait_until="Starting"
 
