@@ -4,7 +4,8 @@ packaging_format = 2
 
 id = "huginn"
 name = "Huginn"
-description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
+description.en = "Build agents that monitor and act on your behalf"
+description.fr = "Créez des agents qui surveillent et agissent en votre nom"
 
 version = "2024.09.08~ynh1"
 
@@ -15,7 +16,8 @@ license = "MIT"
 code = "https://github.com/huginn/huginn"
 
 [integration]
-yunohost = ">= 11.2.12"
+yunohost = ">= 11.2.30"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
 ldap = false
@@ -56,6 +58,7 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.permissions]
     main.url = "/"
@@ -76,7 +79,6 @@ ram.runtime = "50M"
         "graphviz",
         "jq",
         "openssl",
-
         "autoconf",
         "automake",
         "bison",
