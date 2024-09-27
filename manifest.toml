@@ -4,7 +4,8 @@ packaging_format = 2
 
 id = "huginn"
 name = "Huginn"
-description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
+description.en = "Build agents that monitor and act on your behalf"
+description.fr = "Créez des agents qui surveillent et agissent en votre nom"
 
 version = "2024.07.06~ynh1"
 
@@ -78,7 +79,6 @@ ram.runtime = "50M"
         "graphviz",
         "jq",
         "openssl",
-
         "autoconf",
         "automake",
         "bison",
