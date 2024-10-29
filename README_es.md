@@ -18,7 +18,7 @@ No se debe editar a mano.
 
 Huginn is a system for building agents that perform automated tasks for you online. They can read the web, watch for events, and take actions on your behalf. Huginn's Agents create and consume events, propagating them along a directed graph. Think of it as a hackable version of IFTTT or Zapier on your own server. You always know who has your data. You do.
 
-**Versión actual:** 2024.07.06~ynh1
+**Versión actual:** 2024.10.27~ynh1
 
 ## Capturas
 
@@ -32,7 +32,7 @@ Huginn is a system for building agents that perform automated tasks for you onli
 
 ## Información para desarrolladores
 
-Por favor enviar sus correcciones a la [`branch testing`](https://github.com/YunoHost-Apps/huginn_ynh/tree/testing
+Por favor enviar sus correcciones a la [rama `testing`](https://github.com/YunoHost-Apps/huginn_ynh/tree/testing).
 
 Para probar la rama `testing`, sigue asÍ:
 
