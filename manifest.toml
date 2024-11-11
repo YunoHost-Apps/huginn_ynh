@@ -6,7 +6,7 @@ id = "huginn"
 name = "Huginn"
 description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
 
-version = "2024.10.27~ynh1"
+version = "2024.11.09~ynh1"
 
 maintainers = ["aurel"]
 
@@ -45,8 +45,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/huginn/huginn/archive/087bcdd8f21ead2dd4e587b554e8248e5ffd4b99.tar.gz"
-    sha256 = "4ea95e8a5a2ffddf2104e6e8f170dfd398450b60a0f60972e3210ce5b5833722"
+    url = "https://github.com/huginn/huginn/archive/185c7983246f0bbd3f9ed1d507a9524289cf81da.tar.gz"
+    sha256 = "effd1e5f1876a2f244da71f20cae4fde75bc6fae2dfc903cdc1665c37daacbcb"
 
     # Yeah there is a release but it's 2 years old and the doc tells to git commit…
     autoupdate.strategy = "latest_github_commit"
