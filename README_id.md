@@ -5,7 +5,9 @@ Ini TIDAK boleh diedit dengan tangan.
 
 # Huginn untuk YunoHost
 
-[![Tingkat integrasi](https://dash.yunohost.org/integration/huginn.svg)](https://ci-apps.yunohost.org/ci/apps/huginn/) ![Status kerja](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Status pemeliharaan](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
+[![Tingkat integrasi](https://apps.yunohost.org/badge/integration/huginn)](https://ci-apps.yunohost.org/ci/apps/huginn/)
+![Status kerja](https://apps.yunohost.org/badge/state/huginn)
+![Status pemeliharaan](https://apps.yunohost.org/badge/maintained/huginn)
 
 [![Pasang Huginn dengan YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=huginn)
 
@@ -18,7 +20,7 @@ Ini TIDAK boleh diedit dengan tangan.
 
 Huginn is a system for building agents that perform automated tasks for you online. They can read the web, watch for events, and take actions on your behalf. Huginn's Agents create and consume events, propagating them along a directed graph. Think of it as a hackable version of IFTTT or Zapier on your own server. You always know who has your data. You do.
 
-**Versi terkirim:** 2024.11.17~ynh1
+**Versi terkirim:** 2024.11.18~ynh1
 
 ## Tangkapan Layar
 

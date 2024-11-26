@@ -5,7 +5,9 @@ NON debe editarse manualmente.
 
 # Huginn para YunoHost
 
-[![Nivel de integración](https://dash.yunohost.org/integration/huginn.svg)](https://ci-apps.yunohost.org/ci/apps/huginn/) ![Estado de funcionamento](https://ci-apps.yunohost.org/ci/badges/huginn.status.svg) ![Estado de mantemento](https://ci-apps.yunohost.org/ci/badges/huginn.maintain.svg)
+[![Nivel de integración](https://apps.yunohost.org/badge/integration/huginn)](https://ci-apps.yunohost.org/ci/apps/huginn/)
+![Estado de funcionamento](https://apps.yunohost.org/badge/state/huginn)
+![Estado de mantemento](https://apps.yunohost.org/badge/maintained/huginn)
 
 [![Instalar Huginn con YunoHost](https://install-app.yunohost.org/install-with-yunohost.svg)](https://install-app.yunohost.org/?app=huginn)
 
@@ -18,7 +20,7 @@ NON debe editarse manualmente.
 
 Huginn is a system for building agents that perform automated tasks for you online. They can read the web, watch for events, and take actions on your behalf. Huginn's Agents create and consume events, propagating them along a directed graph. Think of it as a hackable version of IFTTT or Zapier on your own server. You always know who has your data. You do.
 
-**Versión proporcionada:** 2024.11.17~ynh1
+**Versión proporcionada:** 2024.11.18~ynh1
 
 ## Capturas de pantalla
 
