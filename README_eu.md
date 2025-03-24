@@ -36,7 +36,7 @@ Huginn is a system for building agents that perform automated tasks for you onli
 
 Bidali `pull request`a [`testing` abarrera](https://github.com/YunoHost-Apps/huginn_ynh/tree/testing).
 
-`testing` abarra probatzeko, ondorengoa egin:
+`testing` abarra probatzeko, honakoa egin:
 
 ```bash
 sudo yunohost app install https://github.com/YunoHost-Apps/huginn_ynh/tree/testing --debug

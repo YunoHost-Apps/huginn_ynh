@@ -3,7 +3,7 @@ Este archivo README esta generado automaticamente<https://github.com/YunoHost/ap
 No se debe editar a mano.
 -->
 
-# Huginn para Yunohost
+# Huginn para YunoHost
 
 [![Nivel de integración](https://apps.yunohost.org/badge/integration/huginn)](https://ci-apps.yunohost.org/ci/apps/huginn/)
 ![Estado funcional](https://apps.yunohost.org/badge/state/huginn)
