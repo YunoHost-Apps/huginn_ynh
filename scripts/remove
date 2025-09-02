@@ -4,7 +4,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source _common.sh
+
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -29,7 +29,7 @@ ynh_remove_systemd_config --service="$app-jobs"
 ynh_remove_nginx_config
 
 # Remove metapackage and its dependencies
-ynh_remove_ruby
+#REMOVEME? ynh_remove_ruby
 
 #=================================================
 # END OF SCRIPT

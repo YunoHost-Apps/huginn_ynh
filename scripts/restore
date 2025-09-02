@@ -4,16 +4,16 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-# Keep this path for calling _common.sh inside the execution's context of backup and restore scripts
-source ../settings/scripts/_common.sh
+
+
 source /usr/share/yunohost/helpers
 
 #=================================================
 # REINSTALL DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Reinstalling Ruby..."
+#REMOVEME? ynh_script_progression --message="Reinstalling Ruby..."
 
-ynh_install_ruby --ruby_version=$ruby_version
+#REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version=$ruby_version
 
 #=================================================
 # RESTORE THE APP MAIN DIR
@@ -40,7 +40,7 @@ ynh_mysql_connect_as --user="$db_user" --password="$db_pwd" --database="$db_name
 ynh_script_progression --message="Building app..."
 
 pushd "$install_dir"
-	ynh_use_ruby
+	#REMOVEME? ynh_use_ruby
 	ynh_gem install rubygems-update -v 3.4
 	ynh_gem update --system --no-document
 	ynh_gem install bundler -v 2.4.22

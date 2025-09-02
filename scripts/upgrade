@@ -4,7 +4,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-source _common.sh
+
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -18,9 +18,9 @@ ynh_systemd_action --service_name="$app-jobs" --action="stop" --log_path="/var/l
 #=================================================
 # UPGRADE DEPENDENCIES
 #=================================================
-ynh_script_progression --message="Upgrading Ruby..." --weight=1
+#REMOVEME? ynh_script_progression --message="Upgrading Ruby..." --weight=1
 
-ynh_exec_warn_less ynh_install_ruby --ruby_version=$ruby_version
+#REMOVEME? ynh_exec_warn_less #REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version=$ruby_version
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -50,7 +50,7 @@ chown "$app:$app" "$install_dir/.env"
 ynh_script_progression --message="Building app..."
 
 pushd $install_dir
-	ynh_use_ruby
+	#REMOVEME? ynh_use_ruby
 	cp -f config/unicorn.rb.example config/unicorn.rb
 	chown -R "$app:www-data" "$install_dir/config/unicorn.rb"
 	ynh_gem install rubygems-update -v 3.4

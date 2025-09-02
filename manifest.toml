@@ -15,7 +15,7 @@ license = "MIT"
 code = "https://github.com/huginn/huginn"
 
 [integration]
-yunohost = ">= 11.2.12"
+yunohost = ">= 12.1.17"
 architectures = "all"
 multi_instance = true
 ldap = false
@@ -94,3 +94,6 @@ ram.runtime = "50M"
 
     [resources.database]
     type = "mysql"
+
+    [resources.ruby]
+    version = "3.2.4"
