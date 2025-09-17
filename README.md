@@ -8,7 +8,7 @@ It shall NOT be edited by hand.
   Huginn, packaged for YunoHost
 </h1>
 
-Build agents that monitor and act on your behalf. Your agents are standing by
+Build agents that monitor and act on your behalf
 
 [![Version: 2025.09.11~ynh1](https://img.shields.io/badge/Version-2025.09.11~ynh1-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/huginn/)
 
