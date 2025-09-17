@@ -4,7 +4,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -14,13 +13,6 @@ source /usr/share/yunohost/helpers
 secret=$(ynh_string_random --length=16)
 
 ynh_app_setting_set --app="$app" --key="secret" --value="$secret"
-
-#=================================================
-# INSTALL DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Installing Ruby..."
-
-#REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version=$ruby_version
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE

@@ -4,16 +4,7 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-
-
 source /usr/share/yunohost/helpers
-
-#=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Reinstalling Ruby..."
-
-#REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version=$ruby_version
 
 #=================================================
 # RESTORE THE APP MAIN DIR

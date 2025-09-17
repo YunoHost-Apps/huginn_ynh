@@ -4,7 +4,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -14,13 +13,6 @@ ynh_script_progression --message="Stopping $app's systemd services..."
 
 ynh_systemd_action --service_name="$app-web" --action="stop" --log_path="/var/log/$app/$app.log"
 ynh_systemd_action --service_name="$app-jobs" --action="stop" --log_path="/var/log/$app/$app.log"
-
-#=================================================
-# UPGRADE DEPENDENCIES
-#=================================================
-#REMOVEME? ynh_script_progression --message="Upgrading Ruby..." --weight=1
-
-#REMOVEME? ynh_exec_warn_less #REMOVEME? ynh_install_ruby --#REMOVEME? ruby_version=$ruby_version
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE

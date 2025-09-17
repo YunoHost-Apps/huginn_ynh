@@ -4,7 +4,8 @@ packaging_format = 2
 
 id = "huginn"
 name = "Huginn"
-description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
+description.en = "Build agents that monitor and act on your behalf"
+description.fr = "Créez des agents qui surveillent et agissent en votre nom"
 
 version = "2025.09.11~ynh1"
 
@@ -18,8 +19,10 @@ code = "https://github.com/huginn/huginn"
 yunohost = ">= 12.1.17"
 architectures = "all"
 multi_instance = true
+
 ldap = false
 sso = false
+
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"

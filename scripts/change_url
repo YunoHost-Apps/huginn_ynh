@@ -4,7 +4,6 @@
 # IMPORT GENERIC HELPERS
 #=================================================
 
-
 source /usr/share/yunohost/helpers
 
 #=================================================
@@ -27,8 +26,6 @@ ynh_change_url_nginx_config
 #=================================================
 ynh_script_progression --message="Updating $app's configuration file..."
 
-#domain=$new_domain
-#path=$new_path
 ynh_add_config --template=".env.example" --destination="$install_dir/.env"
 
 chmod 400 "$install_dir/.env"
