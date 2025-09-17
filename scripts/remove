@@ -20,10 +20,7 @@ fi
 
 ynh_config_remove_systemd"$app-jobs"
 
-
 ynh_config_remove_nginx
-
-ynh_ruby_remove
 
 #=================================================
 # END OF SCRIPT

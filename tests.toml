@@ -4,8 +4,18 @@ test_format = 1.0
 
 [default]
 
+    # ------------
+    # Tests to run
+    # ------------
+
     # -------------------------------
     # Default args to use for install
     # -------------------------------
 
     args.invitation = "invitationcode"
+
+    # -------------------------------
+    # Commits to test upgrade from
+    # -------------------------------
+
+    test_upgrade_from.1f92ffd96518c8c7eb23c9b070fde133c30c9897.name = "Upgrade from 2025.01.23~ynh1"

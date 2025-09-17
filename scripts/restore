@@ -4,13 +4,6 @@ source ../settings/scripts/_common.sh
 source /usr/share/yunohost/helpers
 
 #=================================================
-# REINSTALL DEPENDENCIES
-#=================================================
-ynh_script_progression "Reinstalling Ruby..."
-
-ynh_ruby_install
-
-#=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
 ynh_script_progression "Restoring the app main directory..."
@@ -32,7 +25,6 @@ ynh_mysql_db_shell < ./db.sql
 ynh_script_progression "Building app..."
 
 pushd "$install_dir"
-
 	gem install rubygems-update -v 3.4
 	gem update --system --no-document
 	gem install bundler -v 2.4.22
