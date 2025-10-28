@@ -67,7 +67,7 @@ ynh_script_progression "Reloading NGINX web server and $app's service..."
 
 # Start a systemd service
 ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --wait_until="listening on addr"
-ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --wait_until="Starting"
+ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/$app-jobs.log" --wait_until="Starting"
 
 ynh_systemctl --service=nginx --action=reload
 
