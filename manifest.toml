@@ -4,9 +4,10 @@ packaging_format = 2
 
 id = "huginn"
 name = "Huginn"
-description.en = "Build agents that monitor and act on your behalf. Your agents are standing by"
+description.en = "Build agents that monitor and act on your behalf"
+description.fr = "Créez des agents qui surveillent et agissent en votre nom"
 
-version = "2025.03.23~ynh1"
+version = "2025.10.12~ynh1"
 
 maintainers = ["aurel"]
 
@@ -15,11 +16,14 @@ license = "MIT"
 code = "https://github.com/huginn/huginn"
 
 [integration]
-yunohost = ">= 11.2.12"
+yunohost = ">= 12.1.17"
+helpers_version = "2.1"
 architectures = "all"
 multi_instance = true
+
 ldap = false
 sso = false
+
 disk = "50M"
 ram.build = "50M"
 ram.runtime = "50M"
@@ -45,8 +49,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/huginn/huginn/archive/1e0c359a46b1e84eb8c658404212eaf693b30e61.tar.gz"
-    sha256 = "ca060d6ce42844f9a99da84ae58659bb97dc6268077b49b0e13ea33734a0bd24"
+    url = "https://github.com/huginn/huginn/archive/43c0d42db4dfc28f795369410fc34a2b00ad655a.tar.gz"
+    sha256 = "f63cc1127a3527076b941ab630330253d955b3740f1f2a6d90bd062e50727260"
 
     # Yeah there is a release but it's 2 years old and the doc tells to git commit…
     autoupdate.strategy = "latest_github_commit"
@@ -56,6 +60,7 @@ ram.runtime = "50M"
     [resources.system_user]
 
     [resources.install_dir]
+    group = "www-data:r-x"
 
     [resources.permissions]
     main.url = "/"
@@ -94,3 +99,6 @@ ram.runtime = "50M"
 
     [resources.database]
     type = "mysql"
+
+    [resources.ruby]
+    version = "3.2.4"
