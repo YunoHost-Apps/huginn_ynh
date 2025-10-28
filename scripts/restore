@@ -9,9 +9,9 @@ source /usr/share/yunohost/helpers
 #=================================================
 # RESTORE THE APP MAIN DIR
 #=================================================
-ynh_script_progression --message="Restoring the app main directory..."
+ynh_script_progression "Restoring the app main directory..."
 
-ynh_restore_file --origin_path="$install_dir"
+ynh_restore "$install_dir"
 
 mkdir -p "$install_dir/log" "$install_dir/tmp/pids" "$install_dir/tmp/sockets"
 
@@ -21,25 +21,24 @@ chown -R "$app:www-data" "$install_dir"
 #=================================================
 # RESTORE THE MYSQL DATABASE
 #=================================================
-ynh_script_progression --message="Restoring the MySQL database..." --weight=1
+ynh_script_progression "Restoring the MySQL database..."
 
-ynh_mysql_connect_as --user="$db_user" --password="$db_pwd" --database="$db_name" < ./db.sql
+ynh_mysql_db_shell < ./db.sql
 
 #=================================================
 # BUILD APP
 #=================================================
-ynh_script_progression --message="Building app..."
+ynh_script_progression "Building app..."
 
 pushd "$install_dir"
-	#REMOVEME? ynh_use_ruby
-	ynh_gem install rubygems-update -v 3.4
-	ynh_gem update --system --no-document
-	ynh_gem install bundler -v 2.4.22
-	ynh_gem install rake foreman --no-document
+	gem install rubygems-update -v 3.4
+	gem update --system --no-document
+	gem install bundler -v 2.4.22
+	gem install rake foreman --no-document
 	bundle config set --local deployment 'true'
-	ynh_exec_warn_less bundle config set --local without 'development test'
-	ynh_exec_warn_less bundle install
-	ynh_exec_warn_less bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
+	ynh_hide_warnings bundle config set --local without 'development test'
+	ynh_hide_warnings bundle install
+	ynh_hide_warnings bundle exec rake assets:clean assets:precompile tmp:cache:clear RAILS_ENV=production
 popd
 
 chmod 750 "$install_dir/public"
@@ -49,31 +48,31 @@ chown -R "$app:www-data" "$install_dir/public"
 #=================================================
 # RESTORE SYSTEM CONFIGURATIONS
 #=================================================
-ynh_script_progression --message="Restoring system configurations related to $app..." --weight=1
+ynh_script_progression "Restoring system configurations related to $app..."
 
-ynh_restore_file --origin_path="/etc/nginx/conf.d/$domain.d/$app.conf"
+ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
-ynh_restore_file --origin_path="/etc/systemd/system/$app-web.service"
+ynh_restore "/etc/systemd/system/$app-web.service"
 systemctl enable "$app-web.service" --quiet
 yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
 
-ynh_restore_file --origin_path="/etc/systemd/system/$app-jobs.service"
+ynh_restore "/etc/systemd/system/$app-jobs.service"
 systemctl enable "$app-jobs.service" --quiet
 yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 
 #=================================================
 # START SYSTEMD SERVICE
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server and $app's service..."
+ynh_script_progression "Reloading NGINX web server and $app's service..."
 
 # Start a systemd service
-ynh_systemd_action --service_name="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --line_match="listening on addr"
-ynh_systemd_action --service_name="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --line_match="Starting"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --wait_until="listening on addr"
+ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/huginn-jobs.log" --wait_until="Starting"
 
-ynh_systemd_action --service_name=nginx --action=reload
+ynh_systemctl --service=nginx --action=reload
 
 #=================================================
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Restoration completed for $app"
+ynh_script_progression "Restoration completed for $app"
