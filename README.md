@@ -10,7 +10,7 @@ It shall NOT be edited by hand.
 
 Build agents that monitor and act on your behalf
 
-[![Version: 2025.12.24~ynh1](https://img.shields.io/badge/Version-2025.12.24~ynh1-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/huginn/)
+[![Version: 2026.02.01~ynh1](https://img.shields.io/badge/Version-2026.02.01~ynh1-rgb(18,138,11)?style=for-the-badge)](https://ci-apps.yunohost.org/ci/apps/huginn/)
 
 <div align="center">
 <a href="https://apps.yunohost.org/app/huginn"><img height="100px" src="https://github.com/YunoHost/yunohost-artwork/raw/refs/heads/main/badges/neopossum-badges/badge_more_info_on_the_appstore.svg"/></a>
