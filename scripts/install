@@ -47,7 +47,9 @@ pushd "$install_dir"
 	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle exec rake db:create
 	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle exec rake db:migrate
 	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle exec rake db:seed SEED_USERNAME=$admin SEED_PASSWORD=$password
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production DATABASE_NAME=$db_name DATABASE_USERNAME=$db_user DATABASE_PASSWORD="$db_pwd" bundle exec rake assets:precompile
+
+	ynh_hide_warnings ynh_exec_as_app npm install
+	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle exec rake assets:precompile
 popd
 
 chmod 750 "$install_dir/public"
