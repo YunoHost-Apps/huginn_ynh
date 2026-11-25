@@ -101,4 +101,4 @@ ram.runtime = "50M"
     type = "mysql"
 
     [resources.ruby]
-    version = "3.2.4"
+    version = "4.0.6"
