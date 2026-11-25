@@ -44,8 +44,8 @@ pushd "$install_dir"
 	ynh_exec_as_app RAILS_ENV=production bundle config set --local deployment 'true'
 	ynh_script_progression 2
 	ynh_exec_as_app RAILS_ENV=production bundle config set --local without 'development test'
-	ynh_script_progression 3
-	ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle install
+	#ynh_script_progression 3
+	#ynh_hide_warnings ynh_exec_as_app RAILS_ENV=production bundle install
 
 	ynh_script_progression 4
 	
