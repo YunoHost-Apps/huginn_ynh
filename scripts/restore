@@ -31,9 +31,9 @@ ynh_mysql_db_shell < ./db.sql
 ynh_script_progression "Building app..."
 
 pushd "$install_dir"
-	gem install rubygems-update -v 3.4
+	gem install rubygems-update
 	gem update --system --no-document
-	gem install bundler -v 2.4.22
+	gem install bundler
 	gem install rake foreman --no-document
 	bundle config set --local deployment 'true'
 	ynh_hide_warnings bundle config set --local without 'development test'
@@ -54,7 +54,7 @@ ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 ynh_restore "/etc/systemd/system/$app-web.service"
 systemctl enable "$app-web.service" --quiet
-yunohost service add "$app-web" --log="$install_dir/log/unicorn.log"
+yunohost service add "$app-web" --log="$install_dir/log/puma.log"
 
 ynh_restore "/etc/systemd/system/$app-jobs.service"
 systemctl enable "$app-jobs.service" --quiet
@@ -66,7 +66,7 @@ yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
 # Start a systemd service
-ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/unicorn.log" --wait_until="listening on addr"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/puma.log" --wait_until="listening on addr"
 ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/$app-jobs.log" --wait_until="Starting"
 
 ynh_systemctl --service=nginx --action=reload
