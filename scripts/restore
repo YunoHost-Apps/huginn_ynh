@@ -54,11 +54,11 @@ ynh_restore "/etc/nginx/conf.d/$domain.d/$app.conf"
 
 ynh_restore "/etc/systemd/system/$app-web.service"
 systemctl enable "$app-web.service" --quiet
-yunohost service add "$app-web" --log="$install_dir/log/puma.log"
+yunohost service add "$app-web" --log="$install_dir/log/${app}-web.log"
 
 ynh_restore "/etc/systemd/system/$app-jobs.service"
 systemctl enable "$app-jobs.service" --quiet
-yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
+yunohost service add "$app-jobs" --log="$install_dir/log/${app}-jobs.log"
 
 #=================================================
 # START SYSTEMD SERVICE
@@ -66,8 +66,8 @@ yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 ynh_script_progression "Reloading NGINX web server and $app's service..."
 
 # Start a systemd service
-ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/puma.log" --wait_until="listening on addr"
-ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/$app-jobs.log" --wait_until="Starting"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/${app}-web.log" --wait_until="Listening on http"
+ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/${app}-jobs.log" --wait_until="Starting"
 
 ynh_systemctl --service=nginx --action=reload
 

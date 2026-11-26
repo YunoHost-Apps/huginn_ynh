@@ -9,7 +9,7 @@ Group=__APP__
 WorkingDirectory=__INSTALL_DIR__/
 EnvironmentFile=__INSTALL_DIR__/.env
 Environment="PATH=__PATH_WITH_RUBY__"
-ExecStart=__RUBY_DIR__/bundle exec puma -C config/puma.rb
+ExecStart=__RUBY_DIR__/bundle exec rake production:start
 StandardOutput=append:__INSTALL_DIR__/log/__APP__-web.log
 StandardError=inherit
 
