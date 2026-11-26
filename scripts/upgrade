@@ -66,7 +66,7 @@ ynh_config_add_nginx
 
 # Create a dedicated systemd config
 ynh_config_add_systemd --service="$app-web" --template="web.service"
-yunohost service add "$app-web" --log="$install_dir/log/puma.log"
+yunohost service add "$app-web" --log="$install_dir/log/${app}-web.log"
 
 ynh_config_add_systemd --service="$app-jobs" --template="jobs.service"
 yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
@@ -77,8 +77,8 @@ yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 ynh_script_progression "Starting $app's systemd service..."
 
 # Start a systemd service
-ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/puma.log" --wait_until="listening on addr"
-ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/$app-jobs.log" --wait_until="Starting"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/${app}-web.log" --wait_until="listening on addr"
+ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/${app}-jobs.log" --wait_until="Starting"
 
 #=================================================
 # END OF SCRIPT
