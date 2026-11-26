@@ -75,7 +75,7 @@ yunohost service add "$app-jobs" --log="$install_dir/log/production.log"
 ynh_script_progression "Starting $app's systemd service..."
 
 # Start a systemd service
-ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/${app}-web.log" --wait_until="Listening on http"
+ynh_systemctl --service="$app-web" --action="start" --log_path="$install_dir/log/${app}-web.log" --wait_until="Listening on unix"
 ynh_systemctl --service="$app-jobs" --action="start" --log_path="$install_dir/log/${app}-jobs.log" --wait_until="Starting"
 
 #=================================================
