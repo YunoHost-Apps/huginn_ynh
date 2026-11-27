@@ -7,7 +7,7 @@ name = "Huginn"
 description.en = "Build agents that monitor and act on your behalf"
 description.fr = "Créez des agents qui surveillent et agissent en votre nom"
 
-version = "2026.02.20~ynh1"
+version = "2026.11.21~ynh1"
 
 maintainers = ["aurel"]
 
@@ -49,8 +49,8 @@ ram.runtime = "50M"
 
 [resources]
     [resources.sources.main]
-    url = "https://github.com/huginn/huginn/archive/9328c1eb5a064eb3c1aefa52202009b657ee46c2.tar.gz"
-    sha256 = "8c29712870b291e61934c7af3db498681074e5afc47d10e096d00359ba2401a3"
+    url = "https://github.com/huginn/huginn/archive/4d4fa3f49383bfd621b6b7abc05e1c70fa0c0001.tar.gz"
+    sha256 = "56f80112925320815cf0bd81e28a179e61e2f8163552488b8deb1cad24e9e89b"
 
     # Yeah there is a release but it's 2 years old and the doc tells to git commit…
     autoupdate.strategy = "latest_github_commit"
@@ -81,6 +81,7 @@ ram.runtime = "50M"
         "graphviz",
         "jq",
         "openssl",
+        "runit",
 
         "autoconf",
         "automake",
@@ -100,5 +101,8 @@ ram.runtime = "50M"
     [resources.database]
     type = "mysql"
 
+    [resources.nodejs]
+    version = "24"
+
     [resources.ruby]
-    version = "3.2.4"
+    version = "4.0.10"
